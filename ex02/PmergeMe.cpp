@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:43:35 by hsebille          #+#    #+#             */
-/*   Updated: 2023/12/15 21:51:05 by hsebille         ###   ########.fr       */
+/*   Updated: 2023/12/15 22:18:23 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ PmergeMe::~PmergeMe()
 void PmergeMe::sortVector()
 {
 	makeFirstPairs();
+//	make_pairs(_firstPairs);
 }
 
 void PmergeMe::parseVector(char **argv)
@@ -76,10 +77,35 @@ void PmergeMe::makeFirstPairs()
 	}
 }
 
-/* std::vector<std::pair<int, int> > make_pairs(std::vector<std::pair<int, int> > _unsorted)
-{
-	
-	make_pairs()
-	if (_unsorted.size() == 1)
-		return ;
-} */
+// std::vector<std::pair<int, int> > PmergeMe::make_pairs(std::vector<std::pair<int, int> > pairs)
+// {
+//     // Base case: If the vector has only one pair, return it
+//     if (pairs.size() == 1)
+//         return pairs;
+
+//     std::vector<std::pair<int, int> > new_pairs;
+
+//     // Process pairs in pairs
+//     for (size_t i = 0; i < pairs.size(); i += 2) {
+//         // Extract pairs
+//         std::pair<int, int> pair1 = pairs[i];
+//         std::pair<int, int> pair2;
+
+//         // Check if there's an odd number of pairs
+//         if (i + 1 < pairs.size()) {
+//             pair2 = pairs[i + 1];
+
+//             // Compare and merge pairs
+//             if (pair1.first > pair2.second)
+//                 new_pairs.push_back(std::make_pair(pair1.first, pair2.second));
+//             else
+//                 new_pairs.push_back(std::make_pair(pair2.second, pair1.first));
+//         } else {
+//             // If there's an odd number, just add the last pair
+//             new_pairs.push_back(pair1);
+//         }
+//     }
+
+//     // Recursively call the function with the new pairs
+//     return make_pairs(new_pairs);
+// }
