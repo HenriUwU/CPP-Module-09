@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:43:35 by hsebille          #+#    #+#             */
-/*   Updated: 2023/12/15 18:47:41 by hsebille         ###   ########.fr       */
+/*   Updated: 2023/12/15 21:51:05 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,14 @@ void PmergeMe::makeFirstPairs()
 	int first;
 	int second;
 
-	for (std::vector<int>::iterator i = _unsorted.begin(); i != _unsorted.end(); i++) {
-		if (_unsorted.size() > 3) {
-			first = *i;
-			i++;
-			second = *i;
+	for (unsigned long int i = 0; i < _unsorted.size(); i += 2) {
+			first = _unsorted[i];
+			second = _unsorted[i + 1];
+
 			if (first > second)
 				_firstPairs.push_back(std::make_pair(first, second));
 			else
 				_firstPairs.push_back(std::make_pair(second, first));	
-		}
 	}
 	for (std::vector<std::pair<int, int> >::iterator i = _firstPairs.begin(); i != _firstPairs.end(); i++) {
 		std::cout << i->first << " | " << i->second << std::endl;
