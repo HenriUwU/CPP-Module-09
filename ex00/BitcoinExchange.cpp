@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 14:13:04 by hsebille          #+#    #+#             */
-/*   Updated: 2023/12/14 17:03:22 by hsebille         ###   ########.fr       */
+/*   Updated: 2023/12/15 10:04:35 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,6 @@ bool verify_date(std::string date)
 		return (true);
 	if (day > days[month])
 		return (false);
-
 
 	return (true);
 }
