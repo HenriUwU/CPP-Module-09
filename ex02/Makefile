@@ -6,7 +6,7 @@
 #    By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/29 18:31:08 by hsebille          #+#    #+#              #
-#    Updated: 2023/12/15 14:11:03 by hsebille         ###   ########.fr        #
+#    Updated: 2023/12/15 16:57:17 by hsebille         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ NAME			:=	PmergeMe
 #          INGREDIENTS          #
 #-------------------------------#
 
-SRC				:=	main.cpp			\
+SRC				:=	main.cpp		\
+					PmergeMe.cpp	\
 
 SRC_OBJS		:=	$(SRC:%.cpp=.build/%.o)
 DEPS			:=	$(SRC_OBJS:%.o=%.d)
