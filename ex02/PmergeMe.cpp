@@ -6,15 +6,15 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:43:35 by hsebille          #+#    #+#             */
-/*   Updated: 2023/12/16 19:49:38 by hsebille         ###   ########.fr       */
+/*   Updated: 2023/12/16 21:05:53 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 
-PmergeMe::PmergeMe(char **argv)
+PmergeMe::PmergeMe()
 {
-	parseVector(argv);
+	
 }
 
 PmergeMe::~PmergeMe()
@@ -41,10 +41,11 @@ int binarySearch(std::vector<int> list, int value)
     return static_cast<int>(low);
 }
 
-void PmergeMe::sortVector()
+void PmergeMe::sortVector(char **argv)
 {
-	std::vector<std::pair<int, int> > _newPairs;
-
+	clock_t _starTime = clock();
+	
+	parseVector(argv);
 	makeFirstPairs();
 	make_pairs(_firstPairs);
 	
@@ -55,6 +56,10 @@ void PmergeMe::sortVector()
 			std::cout << " ";
 	}
 	std::cout << std::endl;
+	clock_t endTime = clock();
+	double duration = (double)(endTime - _starTime) / CLOCKS_PER_SEC * 1000;
+	std::cout << std::endl;
+	std::cout << "Time to process a range of " << _unsorted.size() << " elements with std::vector : " << duration << " s" << std::endl;
 }
 
 void PmergeMe::parseVector(char **argv)
@@ -129,18 +134,19 @@ void PmergeMe::make_pairs(std::vector<std::pair<int, int> > pairs)
             else
                 new_pairs.push_back(std::make_pair(pair2.first, pair1.first));
         }
-		else
+  		else
             new_pairs.push_back(pair1);
     }
 		
-	if (new_pairs.size() > 1) {
+
+	if (new_pairs.size() != 1) {
     	make_pairs(new_pairs);
 	}
 
 	insert(new_pairs);
 
 	for (std::vector<std::pair<int, int> >::const_iterator it = pairs.begin(); it != pairs.end(); ++it) {
-    	int insertPosition = binarySearch(_sorted, it->second);
-    	_sorted.insert(_sorted.begin() + insertPosition, it->second);
+//		std::cout << std::endl << "Insert : " << it->second << " according to : " << it->first << " | " << it->second << std::endl;
+    	_sorted.insert(_sorted.begin() + binarySearch(_sorted, it->second), it->second);
 	}
 }
