@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:43:35 by hsebille          #+#    #+#             */
-/*   Updated: 2023/12/15 22:18:23 by hsebille         ###   ########.fr       */
+/*   Updated: 2023/12/16 16:23:41 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,16 @@ PmergeMe::~PmergeMe()
 
 void PmergeMe::sortVector()
 {
+	std::vector<std::pair<int, int> > _newPairs;
+
 	makeFirstPairs();
-//	make_pairs(_firstPairs);
+	_newPairs = make_pairs(_firstPairs);
+	
+	std::cout << std::endl;
+	std::cout << "Second pairs : max | min" << std::endl;
+	for (std::vector<std::pair<int, int> >::iterator i = _newPairs.begin(); i != _newPairs.end(); i++) {
+		std::cout << i->first << " | " << i->second << std::endl;
+	}
 }
 
 void PmergeMe::parseVector(char **argv)
@@ -72,40 +80,38 @@ void PmergeMe::makeFirstPairs()
 			else
 				_firstPairs.push_back(std::make_pair(second, first));	
 	}
+	std::cout << std::endl;
+	std::cout << "First pairs : max | min" << std::endl;
 	for (std::vector<std::pair<int, int> >::iterator i = _firstPairs.begin(); i != _firstPairs.end(); i++) {
 		std::cout << i->first << " | " << i->second << std::endl;
 	}
 }
 
-// std::vector<std::pair<int, int> > PmergeMe::make_pairs(std::vector<std::pair<int, int> > pairs)
-// {
-//     // Base case: If the vector has only one pair, return it
-//     if (pairs.size() == 1)
-//         return pairs;
+std::vector<std::pair<int, int> > PmergeMe::make_pairs(std::vector<std::pair<int, int> > pairs)
+{
+    if (pairs.size() == 1)
+        return pairs;
 
-//     std::vector<std::pair<int, int> > new_pairs;
+    std::vector<std::pair<int, int> > new_pairs;
 
-//     // Process pairs in pairs
-//     for (size_t i = 0; i < pairs.size(); i += 2) {
-//         // Extract pairs
-//         std::pair<int, int> pair1 = pairs[i];
-//         std::pair<int, int> pair2;
+    for (size_t i = 0; i < pairs.size(); i += 2) {
+        std::pair<int, int> pair1 = pairs[i];
+        std::pair<int, int> pair2;
 
-//         // Check if there's an odd number of pairs
-//         if (i + 1 < pairs.size()) {
-//             pair2 = pairs[i + 1];
+        if (i + 1 < pairs.size()) {
+            pair2 = pairs[i + 1];
 
-//             // Compare and merge pairs
-//             if (pair1.first > pair2.second)
-//                 new_pairs.push_back(std::make_pair(pair1.first, pair2.second));
-//             else
-//                 new_pairs.push_back(std::make_pair(pair2.second, pair1.first));
-//         } else {
-//             // If there's an odd number, just add the last pair
-//             new_pairs.push_back(pair1);
-//         }
-//     }
+            if (pair1.first > pair2.first)
+                new_pairs.push_back(std::make_pair(pair1.first, pair2.first));
+            else
+                new_pairs.push_back(std::make_pair(pair2.first, pair1.first));
+        }
+		else {
+            new_pairs.push_back(pair1);
+        }
+    }
 
-//     // Recursively call the function with the new pairs
-//     return make_pairs(new_pairs);
-// }
+    make_pairs(new_pairs);
+
+    return new_pairs;
+}
