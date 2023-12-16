@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:49:05 by hsebille          #+#    #+#             */
-/*   Updated: 2023/12/16 11:46:16 by hsebille         ###   ########.fr       */
+/*   Updated: 2023/12/16 18:54:08 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ class PmergeMe {
 			void parseVector(char **argv);
 			void sortVector();
 			void makeFirstPairs();
-			std::vector<std::pair<int, int> > make_pairs(std::vector<std::pair<int, int> > pairs);
+			void make_pairs(std::vector<std::pair<int, int> > pairs);
+			void insert(std::vector<std::pair<int, int> > pairs);
 };
 
 

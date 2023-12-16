@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:43:35 by hsebille          #+#    #+#             */
-/*   Updated: 2023/12/16 16:23:41 by hsebille         ###   ########.fr       */
+/*   Updated: 2023/12/16 19:49:38 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,39 @@ PmergeMe::~PmergeMe()
 	
 }
 
+int binarySearch(std::vector<int> list, int value)
+{
+    size_t low = 0;
+    size_t high = list.size();
+
+    while (low < high) {
+        size_t mid = low + (high - low) / 2;
+
+        if (list[mid] == value)
+            return mid;
+
+        if (list[mid] < value)
+            low = mid + 1;
+        else
+            high = mid;
+    }
+    return static_cast<int>(low);
+}
+
 void PmergeMe::sortVector()
 {
 	std::vector<std::pair<int, int> > _newPairs;
 
 	makeFirstPairs();
-	_newPairs = make_pairs(_firstPairs);
+	make_pairs(_firstPairs);
 	
-	std::cout << std::endl;
-	std::cout << "Second pairs : max | min" << std::endl;
-	for (std::vector<std::pair<int, int> >::iterator i = _newPairs.begin(); i != _newPairs.end(); i++) {
-		std::cout << i->first << " | " << i->second << std::endl;
+	std::cout << "After : ";
+	for (std::vector<int>::iterator i = _sorted.begin(); i != _sorted.end(); i++) {
+		std::cout << *i;
+		if (i + 1 != _sorted.end())
+			std::cout << " ";
 	}
+	std::cout << std::endl;
 }
 
 void PmergeMe::parseVector(char **argv)
@@ -80,19 +101,21 @@ void PmergeMe::makeFirstPairs()
 			else
 				_firstPairs.push_back(std::make_pair(second, first));	
 	}
-	std::cout << std::endl;
-	std::cout << "First pairs : max | min" << std::endl;
-	for (std::vector<std::pair<int, int> >::iterator i = _firstPairs.begin(); i != _firstPairs.end(); i++) {
-		std::cout << i->first << " | " << i->second << std::endl;
+}
+
+void PmergeMe::insert(std::vector<std::pair<int, int> > pairs)
+{
+	if (_sorted.empty())
+		_sorted.push_back(pairs[0].first);
+	if (_sorted.size() == 1) {
+		_sorted.insert(_sorted.begin(), pairs[0].second);
+		return ;
 	}
 }
 
-std::vector<std::pair<int, int> > PmergeMe::make_pairs(std::vector<std::pair<int, int> > pairs)
+void PmergeMe::make_pairs(std::vector<std::pair<int, int> > pairs)
 {
-    if (pairs.size() == 1)
-        return pairs;
-
-    std::vector<std::pair<int, int> > new_pairs;
+	std::vector<std::pair<int, int> > new_pairs;
 
     for (size_t i = 0; i < pairs.size(); i += 2) {
         std::pair<int, int> pair1 = pairs[i];
@@ -106,12 +129,18 @@ std::vector<std::pair<int, int> > PmergeMe::make_pairs(std::vector<std::pair<int
             else
                 new_pairs.push_back(std::make_pair(pair2.first, pair1.first));
         }
-		else {
+		else
             new_pairs.push_back(pair1);
-        }
     }
+		
+	if (new_pairs.size() > 1) {
+    	make_pairs(new_pairs);
+	}
 
-    make_pairs(new_pairs);
+	insert(new_pairs);
 
-    return new_pairs;
+	for (std::vector<std::pair<int, int> >::const_iterator it = pairs.begin(); it != pairs.end(); ++it) {
+    	int insertPosition = binarySearch(_sorted, it->second);
+    	_sorted.insert(_sorted.begin() + insertPosition, it->second);
+	}
 }
