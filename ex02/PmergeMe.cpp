@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:43:35 by hsebille          #+#    #+#             */
-/*   Updated: 2023/12/18 18:34:02 by hsebille         ###   ########.fr       */
+/*   Updated: 2023/12/18 18:51:23 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void PmergeMe::parseVector(char **argv)
 	}
 	if (_unsortedVector.size() == 1)
 		throw std::logic_error("Error: single element in list.");
-	std::cout << std::endl << RED << "std::vector | Before: ";
+	std::cout << std::endl << RED << "Before: ";
 	for (std::vector<int>::iterator i = _unsortedVector.begin(); i != _unsortedVector.end(); i++) {
 		std::cout << *i;
 		if (i + 1 != _unsortedVector.end())
@@ -156,7 +156,7 @@ void PmergeMe::sortVector(char **argv)
 	if (_unsortedVector.size() % 2 != 0)
 		_sortedVector.insert(_sortedVector.begin() + binarySearch(_sortedVector, _unsortedVector.back()), _unsortedVector.back());
 
-	std::cout << GREEN << "std::vector | After : ";
+	std::cout << GREEN << "After : ";
 	for (std::vector<int>::iterator i = _sortedVector.begin(); i != _sortedVector.end(); i++) {
 		std::cout << *i;
 		if (i + 1 != _sortedVector.end())
@@ -167,7 +167,7 @@ void PmergeMe::sortVector(char **argv)
 	clock_t endTime = clock();
 	double duration = (double)(endTime - starTime) / CLOCKS_PER_SEC * 1000;
 
-	std::cout << std::endl << BLUE << "Time to process a range of " << _unsortedVector.size() << " elements with std::vector : " << duration << " ms" << NONE << std::endl;
+	std::cout << std::endl << BLUE << "Time to process a range of " << _unsortedVector.size() << " elements with std::vector: " << duration << " ms" << NONE << std::endl;
 }
 
 void PmergeMe::makeFirstPairsVector()
@@ -319,7 +319,7 @@ void PmergeMe::sortDeque(char **argv)
 	clock_t endTime = clock();
 	double duration = (double)(endTime - starTime) / CLOCKS_PER_SEC * 1000;
 
-	std::cout << BLUE << "Time to process a range of " << _unsortedDeque.size() << " elements with std::deque : " << duration << " ms" << NONE << std::endl;
+	std::cout << BLUE << "Time to process a range of " << _unsortedDeque.size() << " elements with std::deque : " << duration << " ms" << NONE << std::endl << std::endl;
 }
 
 void PmergeMe::makeFirstPairsDeque()
