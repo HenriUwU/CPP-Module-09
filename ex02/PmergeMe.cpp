@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:43:35 by hsebille          #+#    #+#             */
-/*   Updated: 2023/12/16 21:05:53 by hsebille         ###   ########.fr       */
+/*   Updated: 2023/12/18 15:42:12 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,26 @@ int binarySearch(std::vector<int> list, int value)
     return static_cast<int>(low);
 }
 
+unsigned long long jacobStahl(unsigned long long pos)
+{
+	if (pos == 0 || pos == 1)
+		return (2);
+	
+	unsigned long long i = 1;
+	unsigned long long current = 2;
+	unsigned long long prev = 2;
+	unsigned long long antePrev = 2;
+
+	while (i < pos)
+	{
+		antePrev = prev;
+		prev = current;
+		current = prev + (antePrev * 2);
+		i++;
+	}
+	return (current);
+}
+
 void PmergeMe::sortVector(char **argv)
 {
 	clock_t _starTime = clock();
@@ -49,17 +69,68 @@ void PmergeMe::sortVector(char **argv)
 	makeFirstPairs();
 	make_pairs(_firstPairs);
 	
-	std::cout << "After : ";
+	if (_firstPairs.size() % 2 != 0)
+		_sorted.insert(_sorted.begin() + binarySearch(_sorted, _firstPairs[_firstPairs.size() - 1].first), _firstPairs[_firstPairs.size() - 1].first);			
+
+	// Insert the minimum of the smallest maximum
+	for (size_t i = 0; i < _firstPairs.size(); i++) {
+		if (_sorted[0] == _firstPairs[i].first) {
+			_sorted.insert(_sorted.begin(), _firstPairs[i].second);
+			_firstPairs.erase(_firstPairs.begin() + i);
+		}
+	}
+	
+	// Insert each minimum
+
+	// make groups of pairs according to jacobstahl
+	// insert the minimum 
+	std::vector<int> _maxVector(_sorted);
+	_maxVector.erase(_maxVector.begin());
+	_maxVector.erase(_maxVector.begin());
+	
+ 	for (size_t i = 0; i < _sorted.size() - 2; i++) {
+		size_t size = jacobStahl(i);
+		std::vector<int> maxGroup;
+		
+		if (size > _maxVector.size())
+			size = _maxVector.size();
+
+		maxGroup.insert(maxGroup.begin(), _maxVector.begin(), _maxVector.begin() + size);
+		_maxVector.erase(_maxVector.begin(), _maxVector.begin() + size);
+		std::reverse(maxGroup.begin(), maxGroup.end());
+
+		size_t k = 0;
+		
+		while (k < maxGroup.size())
+		{
+			size_t j = 0;
+			while (j < _firstPairs.size())
+			{
+				if (maxGroup[k] == _firstPairs[j].first) {
+					_sorted.insert(_sorted.begin() + binarySearch(_sorted, _firstPairs[j].second), _firstPairs[j].second);
+				}
+				j++;
+			}
+			k++;
+		}
+
+		maxGroup.clear();
+	}
+ 
+	//insert(_firstPairs);
+	
+	std::cout << GREEN << "std::vector | After : ";
 	for (std::vector<int>::iterator i = _sorted.begin(); i != _sorted.end(); i++) {
 		std::cout << *i;
 		if (i + 1 != _sorted.end())
 			std::cout << " ";
 	}
-	std::cout << std::endl;
+	std::cout << NONE << std::endl;
+
 	clock_t endTime = clock();
 	double duration = (double)(endTime - _starTime) / CLOCKS_PER_SEC * 1000;
-	std::cout << std::endl;
-	std::cout << "Time to process a range of " << _unsorted.size() << " elements with std::vector : " << duration << " s" << std::endl;
+
+	std::cout << std::endl << BLUE << "Time to process a range of " << _unsorted.size() << " elements with std::vector : " << duration << " us" << NONE << std::endl;
 }
 
 void PmergeMe::parseVector(char **argv)
@@ -83,13 +154,13 @@ void PmergeMe::parseVector(char **argv)
 		_unsorted.push_back(value);
 		j++;	
 	}
-	std::cout << "Before: ";
+	std::cout << std::endl << RED << "std::vector | Before: ";
 	for (std::vector<int>::iterator i = _unsorted.begin(); i != _unsorted.end(); i++) {
 		std::cout << *i;
 		if (i + 1 != _unsorted.end())
 			std::cout << " ";
 	}
-	std::cout << std::endl;
+	std::cout << NONE << std::endl;
 }
 
 void PmergeMe::makeFirstPairs()
@@ -110,11 +181,19 @@ void PmergeMe::makeFirstPairs()
 
 void PmergeMe::insert(std::vector<std::pair<int, int> > pairs)
 {
-	if (_sorted.empty())
+	if (_sorted.empty()) {
 		_sorted.push_back(pairs[0].first);
-	if (_sorted.size() == 1) {
 		_sorted.insert(_sorted.begin(), pairs[0].second);
 		return ;
+	}
+
+	size_t i = 0;
+
+	while (i < pairs.size()) {
+		if (pairs.size() % 2 != 0 && i == pairs.size() - 1)
+			_sorted.insert(_sorted.begin() + binarySearch(_sorted, pairs[i].first), pairs[i].first);			
+		_sorted.insert(_sorted.begin() + binarySearch(_sorted, pairs[i].second), pairs[i].second);
+		i++;
 	}
 }
 
@@ -134,19 +213,11 @@ void PmergeMe::make_pairs(std::vector<std::pair<int, int> > pairs)
             else
                 new_pairs.push_back(std::make_pair(pair2.first, pair1.first));
         }
-  		else
-            new_pairs.push_back(pair1);
     }
-		
 
 	if (new_pairs.size() != 1) {
-    	make_pairs(new_pairs);
+		make_pairs(new_pairs);
 	}
 
-	insert(new_pairs);
-
-	for (std::vector<std::pair<int, int> >::const_iterator it = pairs.begin(); it != pairs.end(); ++it) {
-//		std::cout << std::endl << "Insert : " << it->second << " according to : " << it->first << " | " << it->second << std::endl;
-    	_sorted.insert(_sorted.begin() + binarySearch(_sorted, it->second), it->second);
-	}
+	insert(new_pairs);	
 }

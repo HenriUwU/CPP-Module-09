@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 14:49:05 by hsebille          #+#    #+#             */
-/*   Updated: 2023/12/16 20:46:37 by hsebille         ###   ########.fr       */
+/*   Updated: 2023/12/18 15:22:20 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,16 @@
 # define PMERGEME_HPP
 
 #include <iostream>
+#include <algorithm>
 #include <cstdlib>
 #include <vector>
 #include <limits>
 #include <ctime>
+
+#define RED		"\033[31m"
+#define GREEN	"\033[32m"
+#define BLUE	"\033[34m"
+#define NONE	"\033[0m"
 
 class PmergeMe {
 		private:
