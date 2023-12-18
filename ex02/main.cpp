@@ -6,7 +6,7 @@
 /*   By: hsebille <hsebille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 15:59:04 by hsebille          #+#    #+#             */
-/*   Updated: 2023/12/16 20:46:51 by hsebille         ###   ########.fr       */
+/*   Updated: 2023/12/18 18:28:37 by hsebille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int main(int argc, char **argv)
 	try {
 		PmergeMe sort;
 		sort.sortVector(argv);
+		sort.sortDeque(argv);
 	}
 	catch (std::exception & e) {
 		std::cerr << e.what() << std::endl;
